@@ -1,0 +1,14 @@
+{
+  "name": "windows",
+  "version": "1.0.0",
+  "description": "window project",
+  "main": "index.js",
+  "author": "shah",
+  "license": "MIT",
+  "scripts": {
+  	"serve": "live-server public"
+  },
+  "dependencies": {
+    "live-server": "^1.2.0"
+  }
+}
