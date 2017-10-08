@@ -84,6 +84,7 @@ body {
 .list-item {
   float: left;
   padding: 20px 30px;
+  margin-right: 10px;
   color: #fff;
   background-color: #aaa;
 }
