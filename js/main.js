@@ -1,26 +1,23 @@
+   
+  function getCoords(elem) {
+    var box = elem.getBoundingClientRect();
 
-  var windowTemplate = document.createElement('div');
-      windowTemplate.className = 'window';
-      windowTemplate.innerHTML =  '<div class="window-header">' +
-                                    '<span>Шапка</span>' +
-                                    '<button type="button" class="btn-window-header btn-window-close">х</button>' +
-                                  '</div>' +
-                                  '<div class="window-body">' +
-                                    '<ul class="list">' +
-                                      '<li class="list-item">1</li>' +
-                                      '<li class="list-item">2</li>' +
-                                      '<li class="list-item">3</li>' +
-                                      '<li class="list-item">4</li>' +
-                                    '</ul>' +
-                                  '</div>';
+    var body = document.body;
+    var docEl = document.documentElement;
 
-  var  openWindowElem = document.getElementById('btnOpenWindow');
+    var scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop;
+    var scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
 
-  var windows = [];
+    var clientTop = docEl.clientTop || body.clientTop || 0;
+    var clientLeft = docEl.clientLeft || body.clientLeft || 0;
 
-  openWindowElem.onclick = function(e) {
-    e.preventDefault();
-    createWindow();
+    var top = box.top + scrollTop - clientTop;
+    var left = box.left + scrollLeft - clientLeft;
+
+    return {
+      top: top,
+      left: left
+    };
   }
 
   function createWindow() {
@@ -42,6 +39,13 @@
     header.onmousedown = function(e) {
 
       function moveAt(e, element) {
+        e = e || window.event
+        if (e.pageX == null && e.clientX != null ) {
+          var html = document.documentElement;
+          var body = document.body;
+          e.pageX = e.clientX + (html && html.scrollLeft || body && body.scrollLeft || 0) - (html.clientLeft || 0);
+          e.pageY = e.clientY + (html && html.scrollTop || body && body.scrollTop || 0) - (html.clientTop || 0);
+        }
         element.style.left = e.pageX - shiftX + 'px';
         element.style.top = e.pageY - shiftY + 'px';
       }
@@ -108,27 +112,30 @@
     array.splice(index, 1);
   }
 
-  function getCoords(elem) {
-    var box = elem.getBoundingClientRect();
+  var windowTemplate = document.createElement('div');
+      windowTemplate.className = 'window';
+      windowTemplate.innerHTML =  '<div class="window-header">' +
+                                    '<span>Шапка</span>' +
+                                    '<button type="button" class="btn-window-header btn-window-close">х</button>' +
+                                  '</div>' +
+                                  '<div class="window-body">' +
+                                    '<ul class="list">' +
+                                      '<li class="list-item">1</li>' +
+                                      '<li class="list-item">2</li>' +
+                                      '<li class="list-item">3</li>' +
+                                      '<li class="list-item">4</li>' +
+                                    '</ul>' +
+                                  '</div>';
 
-    var body = document.body;
-    var docEl = document.documentElement;
+  var  openWindowElem = document.getElementById('btnOpenWindow');
 
-    var scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop;
-    var scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
+  var windows = [];
 
-    var clientTop = docEl.clientTop || body.clientTop || 0;
-    var clientLeft = docEl.clientLeft || body.clientLeft || 0;
-
-    var top = box.top + scrollTop - clientTop;
-    var left = box.left + scrollLeft - clientLeft;
-
-    return {
-      top: top,
-      left: left
-    };
+  openWindowElem.onclick = function(e) {
+    e.preventDefault();
+    createWindow();
   }
-
+  
   document.body.ondragstart = function() {
     return false;
   };
